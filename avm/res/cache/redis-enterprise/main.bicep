@@ -276,8 +276,8 @@ module redisCluster_database 'database/main.bicep' = {
   params: {
     name: database.?name
     redisClusterName: redisCluster.name
-    accessKeysAuthentication: isAmr ? database.?accessKeysAuthentication : null
-    accessPolicyAssignments: isAmr ? database.?accessPolicyAssignments : null
+    accessKeysAuthentication: database.?accessKeysAuthentication
+    accessPolicyAssignments: database.?accessPolicyAssignments
     clientProtocol: database.?clientProtocol
     clusteringPolicy: database.?clusteringPolicy
     deferUpgrade: database.?deferUpgrade
@@ -447,7 +447,7 @@ type databaseType = {
   @description('Optional. Name of the database.')
   name: ('default')?
 
-  @description('Optional. Allow authentication via access keys. Only supported on Azure Managed Redis (Preview) SKUs: Balanced, ComputeOptimized, FlashOptimized, and MemoryOptimized. THIS IS A PARAMETER USED FOR A PREVIEW SERVICE/FEATURE, MICROSOFT MAY NOT PROVIDE SUPPORT FOR THIS, PLEASE CHECK THE [PRODUCT DOCS](https://learn.microsoft.com/azure/azure-cache-for-redis/managed-redis/managed-redis-entra-for-authentication#disable-access-key-authentication-on-your-cache) FOR CLARIFICATION.')
+  @description('Optional. Allow authentication via access keys.')
   accessKeysAuthentication: ('Disabled' | 'Enabled')?
 
   @description('Optional. Specifies whether Redis clients can connect using TLS-encrypted or plaintext Redis protocols.')
@@ -484,7 +484,7 @@ type databaseType = {
   @description('Optional. The persistence settings of the service.')
   persistence: persistenceType?
 
-  @description('Optional. Access policy assignments for Microsoft Entra authentication. Only supported on Azure Managed Redis (Preview) SKUs: Balanced, ComputeOptimized, FlashOptimized, and MemoryOptimized. THIS IS A PARAMETER USED FOR A PREVIEW SERVICE/FEATURE, MICROSOFT MAY NOT PROVIDE SUPPORT FOR THIS, PLEASE CHECK THE [PRODUCT DOCS](https://learn.microsoft.com/azure/azure-cache-for-redis/managed-redis/managed-redis-entra-for-authentication) FOR CLARIFICATION.')
+  @description('Optional. Access policy assignments for Microsoft Entra authentication.')
   accessPolicyAssignments: accessPolicyAssignmentType[]?
 
   @description('Optional. Key vault reference and secret settings for the module\'s secrets export.')
