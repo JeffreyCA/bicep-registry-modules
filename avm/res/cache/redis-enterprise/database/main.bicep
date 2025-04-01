@@ -14,7 +14,7 @@ param name string = 'default'
   'Enabled'
   'Disabled'
 ])
-@description('Optional. Allow authentication via access keys. Only supported on Azure Managed Redis (Preview) SKUs: Balanced, ComputeOptimized, FlashOptimized, and MemoryOptimized. THIS IS A PARAMETER USED FOR A PREVIEW SERVICE/FEATURE, MICROSOFT MAY NOT PROVIDE SUPPORT FOR THIS, PLEASE CHECK THE [PRODUCT DOCS](https://learn.microsoft.com/azure/azure-cache-for-redis/managed-redis/managed-redis-entra-for-authentication#disable-access-key-authentication-on-your-cache) FOR CLARIFICATION.')
+@description('Optional. Allow authentication via access keys.')
 param accessKeysAuthentication string = 'Enabled'
 
 @allowed([
@@ -67,7 +67,7 @@ param persistence persistenceType = {
   type: 'disabled'
 }
 
-@description('Optional. Access policy assignments for Microsoft Entra authentication. Only supported on Azure Managed Redis (Preview) SKUs: Balanced, ComputeOptimized, FlashOptimized, and MemoryOptimized. THIS IS A PARAMETER USED FOR A PREVIEW SERVICE/FEATURE, MICROSOFT MAY NOT PROVIDE SUPPORT FOR THIS, PLEASE CHECK THE [PRODUCT DOCS](https://learn.microsoft.com/azure/azure-cache-for-redis/managed-redis/managed-redis-entra-for-authentication) FOR CLARIFICATION.')
+@description('Optional. Access policy assignments for Microsoft Entra authentication.')
 param accessPolicyAssignments accessPolicyAssignmentType[]?
 
 @description('Optional. Key vault reference and secret settings for the module\'s secrets export.')
@@ -85,17 +85,11 @@ resource redisCluster 'Microsoft.Cache/redisEnterprise@2024-09-01-preview' exist
   name: redisClusterName
 }
 
-var clusterSku = redisCluster.sku.name
-var isAmr = startsWith(clusterSku, 'Balanced') || startsWith(clusterSku, 'ComputeOptimized') || startsWith(
-  clusterSku,
-  'FlashOptimized'
-) || startsWith(clusterSku, 'MemoryOptimized')
-
 resource redisDatabase 'Microsoft.Cache/redisEnterprise/databases@2024-09-01-preview' = {
   parent: redisCluster
   name: name
   properties: {
-    accessKeysAuthentication: isAmr ? accessKeysAuthentication : null
+    accessKeysAuthentication: accessKeysAuthentication
     clientProtocol: clientProtocol
     clusteringPolicy: clusteringPolicy
     deferUpgrade: deferUpgrade
