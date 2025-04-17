@@ -221,6 +221,9 @@ output resourceGroupName string = resourceGroup().name
 @description('The Redis database port.')
 output port int = redisDatabase.properties.port
 
+@description('The Redis host name.')
+output hostname string = redisCluster.properties.hostName
+
 @description('The Redis endpoint.')
 output endpoint string = '${redisCluster.properties.hostName}:${redisDatabase.properties.port}'
 

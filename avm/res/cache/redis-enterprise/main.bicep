@@ -414,6 +414,12 @@ output databaseResourceId string = redisCluster_database.outputs.resourceId
 @description('The name of the resource group the Redis resource was created in.')
 output resourceGroupName string = resourceGroup().name
 
+@description('The Redis host name.')
+output hostName string = redisCluster.properties.hostName
+
+@description('The Redis port.')
+output port int = redisCluster_database.outputs.port
+
 @description('The Redis endpoint.')
 output endpoint string = redisCluster_database.outputs.endpoint
 
